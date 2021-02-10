@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">实验二</string>
-    <string name="type_here">请输入</string>
-    <string name="switch_on_off">切换</string>
-    <string name="check_this_out">检查</string>
-    <string name="click_here">点击</string>
-    <string name="look_at_my_gui">看我的GUI</string>
-    <string name="todo">TODO</string>
-    <string name="toast_message">这里有更多的信息</string>
-    <string name="snackbar_on">开关现在打开的</string>
-    <string name="snackbar_off">开关现在关的</string>
-    <string name="snackbar_undo">取消</string>
+    <string name="app_name" translatable="false">Lab3</string>
+    <string name="enter_your_email_address">Enter your email address"</string>
+    <string name="Type_email_here">Type email here</string>
+    <string name ="type_your_password">Type your password</string>
+    <string name="login">Login</string>
+    <string name="email_address">""</string>
+    <string name="password">password</string>
+    <string name="your_profile">Your profile</string>
+    <string name="your_name">Your name</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="your_email">Your email</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="your_picture">Your picture</string>
+    <string name="button3">Take a picture</string>
+    <string name="take_a_picture">Click the button above to take a picture</string>
 </resources>

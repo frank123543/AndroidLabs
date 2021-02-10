@@ -1,73 +1,103 @@
 package com.cst2335.abc040963564;
 
-
-
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
-import android.widget.Switch;
-import android.widget.Toast;
+import android.widget.EditText;
+import android.widget.TextView;
 
-import com.google.android.material.snackbar.Snackbar;
-
-import static android.widget.Toast.LENGTH_LONG;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
+
+    SharedPreferences prefs;
+
+    private EditText et1;
+    private EditText et2;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout. activity_main_relative);
 
-        Switch sw = findViewById(R.id.switch1);
-        ImageButton switch1iButton = findViewById(R.id.imageButton5);
-        Button but = findViewById(R.id.button);
-        CheckBox chb = findViewById(R.id.checkBox);
-        Switch swh = findViewById(R.id.switch1);
+        setContentView(R.layout.activity_main_linear);
 
 
+        EditText et1 = findViewById(R.id.editText1);
+
+//        EditText et2 = findViewById(R.id.editText2);
 
 
-
-
-
-        but.setOnClickListener(
-                btn -> {
-                    Toast.makeText(this, getResources().getString(R.string.toast_message),
-                            Toast.LENGTH_LONG).show();//
-
-                });
-
-
-        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        Button b = findViewById(R.id.button2);
+        b.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    ;
-                    Snackbar.make(swh, getResources().getString(R.string.snackbar_on), Snackbar.LENGTH_SHORT)
-                            .setAction(getResources().getString(R.string.snackbar_undo), click -> compoundButton.setChecked(!b))
-                            .show();
-                    //ImageButton.
-                }else {
-                    Snackbar.make(swh, getResources().getString(R.string.snackbar_off), Snackbar.LENGTH_SHORT)
-                            .setAction(getResources().getString(R.string.snackbar_undo), click -> compoundButton.setChecked(!b))
-                            .show();
-                }}
-
-        });
+            public void onClick(View v) {
 
 
+                //////////////////////////////////////////////
+                String et1Str = et1.getText().toString();
+                Intent goToProfile = new Intent(MainActivity.this, ProfileActivity.class);
+                goToProfile.putExtra("et1", et1Str);
+                startActivity(goToProfile);
+
+    }
+    });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences("filename", Context.MODE_PRIVATE);
+        String savedString = prefs.getString("ReserveName", "defaule value");
+        EditText typeField = findViewById(R.id.editText1);
+        typeField.setText(savedString);
+        saveSharedPrefs(typeField.getText().toString());
+                /////////////////////////////////////////////////
+
+    }
+
+        private void saveSharedPrefs (String stringToSave){
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("ReserveName", stringToSave);
+            editor.commit();
+        }
+
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
 
 
 
-    } }
 
-
-
+}
 

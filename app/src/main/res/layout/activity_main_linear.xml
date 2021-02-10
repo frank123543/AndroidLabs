@@ -7,67 +7,49 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_your_email_address"
+        tools:layout_editor_absoluteX="52dp"
+        tools:layout_editor_absoluteY="60dp" />
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/Type_email_here"
+        android:inputType="textEmailAddress"
+        tools:layout_editor_absoluteX="56dp"
+        tools:layout_editor_absoluteY="128dp"
+        android:autofillHints="" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/look_at_my_gui"
-        android:textSize="30sp"
+        android:text="@string/type_your_password"
+        tools:layout_editor_absoluteX="69dp"
+        tools:layout_editor_absoluteY="214dp" />
 
-
-        />
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="right">
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/click_here"
-            android:layout_gravity="fill"
-            android:layout_weight="1"
-            android:background="@color/black"/>
-
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="fill"
-            android:text="@string/check_this_out" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="right">
-        <ImageButton
-            android:id="@+id/imageButton5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/flag1"
-            android:contentDescription="@string/todo" />
-
-        <Switch
-            android:id="@+id/switch1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/switch_on_off" />
-
-    </LinearLayout>
     <EditText
-        android:id="@+id/editTextTextPersonName2"
+        android:id="@+id/editText2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autofillHints=""
         android:ems="10"
-        android:hint="@string/type_here"
-        android:inputType="textCapSentences" />
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        tools:layout_editor_absoluteX="45dp"
+        tools:layout_editor_absoluteY="283dp"
+        android:autofillHints="" />
 
-
-
-
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login"
+        tools:layout_editor_absoluteX="62dp"
+        tools:layout_editor_absoluteY="396dp" />
 </LinearLayout>
