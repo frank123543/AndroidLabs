@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity{
 
     private ImageButton mImageButton;
     public static final String ACTIVITY_NAME = "PROFILE_ACTIVITY";
@@ -30,7 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
         EditText email = (EditText) findViewById(R.id.editemail);
         email.setText(fromMain.getStringExtra("et1"));
 
-        ///////////////////////////////////////////////////
+
         mImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +57,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
+    protected void onPause(){
         super.onPause();
         Log.e(ACTIVITY_NAME, "In function:" + "onPause");
     }

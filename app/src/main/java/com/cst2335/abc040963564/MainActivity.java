@@ -16,9 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences prefs = null;
 
-    private EditText et1;
-    private EditText et2;
-
+    EditText et1;
 
 
     @Override
@@ -26,11 +24,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main_linear);
-        SharedPreferences prefs = getApplicationContext().getSharedPreferences("filename", Context.MODE_PRIVATE);
-//        String savedString = prefs.getString("ReserveName", "");
-//        EditText typeField = findViewById(R.id.editText1);
-//        typeField.setText(savedString);
-        EditText et1 = findViewById(R.id.editText1);
+        et1 = findViewById(R.id.editText1);
+        prefs = getSharedPreferences("filename", Context.MODE_PRIVATE);
+        String savedString = prefs.getString("ReserveName", "");
+        et1.setText(savedString);
+
 
         Button b = findViewById(R.id.button2);
         b.setOnClickListener(new View.OnClickListener(){
@@ -59,15 +57,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        SharedPreferences prefs = getApplicationContext().getSharedPreferences("filename", Context.MODE_PRIVATE);
-        String savedString = prefs.getString("ReserveName", "");
-        EditText typeField = findViewById(R.id.editText1);
-        typeField.setText(savedString);
-        saveSharedPrefs(typeField.getText().toString());
+
+        saveSharedPrefs(et1.getText().toString());
     }
 
         private void saveSharedPrefs (String stringToSave){
-            prefs = getApplicationContext().getSharedPreferences("filename", Context.MODE_PRIVATE);
+            prefs = getSharedPreferences("filename", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString("ReserveName", stringToSave);
             editor.commit();
