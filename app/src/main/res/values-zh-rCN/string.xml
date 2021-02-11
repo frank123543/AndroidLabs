@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name" translatable="false">Lab3</string>
-    <string name="enter_your_email_address">Enter your email address"</string>
-    <string name="Type_email_here">Type email here</string>
-    <string name ="type_your_password">Type your password</string>
-    <string name="login">Login</string>
+    <string name="app_name" translatable="false">实验三</string>
+    <string name="enter_your_email_address">输入您的邮件</string>
+    <string name="Type_email_here">请输入邮箱</string>
+    <string name ="type_your_password">输入密码</string>
+    <string name="login">登录</string>
     <string name="email_address">""</string>
-    <string name="password">password</string>
-    <string name="your_profile">Your profile</string>
-    <string name="your_name">Your name</string>
-    <string name="enter_your_name">Enter your name</string>
-    <string name="your_email">Your email</string>
-    <string name="enter_your_email">Enter your email</string>
-    <string name="your_picture">Your picture</string>
-    <string name="button3">Take a picture</string>
-    <string name="take_a_picture">Click the button above to take a picture</string>
+    <string name="password">密码</string>
+    <string name="your_profile">你的资料</string>
+    <string name="your_name">您的名字</string>
+    <string name="enter_your_name">输入您的名字</string>
+    <string name="your_email">您的邮箱</string>
+    <string name="enter_your_email">输入您的邮箱</string>
+    <string name="your_picture">您的照片</string>
+    <string name="button3">拍照</string>
+    <string name="take_a_picture">点击以上按钮拍照</string>
 </resources>

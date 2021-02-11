@@ -24,7 +24,7 @@
         android:inputType="textEmailAddress"
         tools:layout_editor_absoluteX="56dp"
         tools:layout_editor_absoluteY="128dp"
-        android:autofillHints="" />
+         />
 
     <TextView
         android:id="@+id/textView3"
@@ -43,7 +43,7 @@
         android:inputType="textPassword"
         tools:layout_editor_absoluteX="45dp"
         tools:layout_editor_absoluteY="283dp"
-        android:autofillHints="" />
+         />
 
     <Button
         android:id="@+id/button2"

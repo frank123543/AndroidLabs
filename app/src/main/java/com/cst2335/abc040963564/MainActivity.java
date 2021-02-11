@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    SharedPreferences prefs;
+    SharedPreferences prefs = null;
 
     private EditText et1;
     private EditText et2;
@@ -26,20 +26,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main_linear);
-
-
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences("filename", Context.MODE_PRIVATE);
+//        String savedString = prefs.getString("ReserveName", "");
+//        EditText typeField = findViewById(R.id.editText1);
+//        typeField.setText(savedString);
         EditText et1 = findViewById(R.id.editText1);
-
-//        EditText et2 = findViewById(R.id.editText2);
-
 
         Button b = findViewById(R.id.button2);
         b.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
-
-                //////////////////////////////////////////////
                 String et1Str = et1.getText().toString();
                 Intent goToProfile = new Intent(MainActivity.this, ProfileActivity.class);
                 goToProfile.putExtra("et1", et1Str);
@@ -64,15 +60,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         SharedPreferences prefs = getApplicationContext().getSharedPreferences("filename", Context.MODE_PRIVATE);
-        String savedString = prefs.getString("ReserveName", "defaule value");
+        String savedString = prefs.getString("ReserveName", "");
         EditText typeField = findViewById(R.id.editText1);
         typeField.setText(savedString);
         saveSharedPrefs(typeField.getText().toString());
-                /////////////////////////////////////////////////
-
     }
 
         private void saveSharedPrefs (String stringToSave){
+            prefs = getApplicationContext().getSharedPreferences("filename", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString("ReserveName", stringToSave);
             editor.commit();
@@ -94,9 +89,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
-
-
-
 
 
 }
