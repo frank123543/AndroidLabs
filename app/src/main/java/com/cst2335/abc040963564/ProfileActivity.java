@@ -37,7 +37,20 @@ public class ProfileActivity extends AppCompatActivity{
                 dispatchTakePictureIntent();
             }
         });
+        Button b4 = findViewById(R.id.button4);
+        b4.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                Intent goTochat = new Intent(ProfileActivity.this, ChatRoomActivity.class);
+
+                startActivity(goTochat);
+
+            }
+        });
+
     }
+
                 private void dispatchTakePictureIntent() {
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -79,6 +92,8 @@ public class ProfileActivity extends AppCompatActivity{
         super.onDestroy();
         Log.e(ACTIVITY_NAME, "In function:" + "onDestroy");
     }
+
+
 
 
 

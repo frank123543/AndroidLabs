@@ -16,4 +16,9 @@
     <string name="your_picture">您的照片</string>
     <string name="button3">拍照</string>
     <string name="take_a_picture">点击以上按钮拍照</string>
+    <string name="button4">去聊天室</string>
+    <string name="sent_button">发送</string>
+    <string name="type_here">请在这里输入</string>
+    <string name="receive_button">接收</string>
+
 </resources>
