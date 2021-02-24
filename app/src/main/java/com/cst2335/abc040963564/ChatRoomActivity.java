@@ -1,12 +1,15 @@
 package com.cst2335.abc040963564;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,31 +22,42 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Boolean.TRUE;
+
 public class ChatRoomActivity extends AppCompatActivity {
 
     private MyListAdapter myAdapter;
     //private ArrayList elements = new ArrayList();
-    final int TYPE_1 = 0;
-    final int TYPE_2 = 1;
+//    final int TYPE_1 = 0;
+//    final int TYPE_2 = 1;
     int type;
     private Button sb;
     private Button rb;
     private Context context;
     EditText et;
     private List<Message> list = new ArrayList<>();
+    SQLiteDatabase db;
+
 
 
     class Message {
         private String text;
-        int gender;
-        public Message(String text, int gender){
-                this.gender = gender;
+        boolean type;
+        long id;
+        public Message(String text, boolean type,long id){
+                this.type = type ;
                 this.text = text;
+                this.id = id;
         }
-       public void setText(String text){this.text = text;}
+
+
+        public void setText(String text){this.text = text;}
        public String getText(){return text;}
-       public void setGender(int gender){this.gender = gender;}
-       public int getGender(){return gender;}
+       public void setType(boolean type){this.type = type;}
+       public boolean getType(){return type;}
+       public void  setId(long id){this.id = id;}
+       public long getId(){return id;}
+
     }
 
 
@@ -51,24 +65,45 @@ public class ChatRoomActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
-        myAdapter = new MyListAdapter();
         ListView myList = (ListView) findViewById(R.id.theListView);
-        myList.setAdapter(myAdapter = new MyListAdapter());
         et = findViewById(R.id.edit);
+        //load database
+        loadDataFromDatabase();
+        myAdapter = new MyListAdapter();
 
+        myList.setAdapter(myAdapter = new MyListAdapter());
+
+
+
+
+        ContentValues newRowValues = new ContentValues();
         Button sb = (Button) findViewById(R.id.sent_button);
         sb.setOnClickListener(click -> {
-            Message msg  = new Message(et.getText().toString(), 0);
+            //Message msg  = new Message(et.getText().toString(), true);
+            String text = et.getText().toString();
             et.setText("");
-            list.add(msg);
+           // list.add(msg);
+            // add to the database
+            newRowValues.put(MyOpener.COL_TYPE,0);
+            newRowValues.put(MyOpener.COL_MESSAGE, text);
+            long newId = db.insert(MyOpener.TABLE_NAME, null, newRowValues);
+            Message newMessage = new Message(text,true,newId);
+            list.add(newMessage);
             myAdapter.notifyDataSetChanged();
         });
 
         Button rb = (Button) findViewById(R.id.receive_button);
         rb.setOnClickListener(click -> {
-            Message msg = new Message(et.getText().toString(),1);
+            String text = et.getText().toString();
+            //Message msg = new Message(et.getText().toString(),false);
             et.setText("");
-            list.add(msg);
+           // list.add(msg);
+           //add to database
+            newRowValues.put(MyOpener.COL_TYPE,1);
+            newRowValues.put(MyOpener.COL_MESSAGE, text);
+            long newId = db.insert(MyOpener.TABLE_NAME, null, newRowValues);
+            Message newMessage = new Message(text,false,newId);
+            list.add(newMessage);
             myAdapter.notifyDataSetChanged();
         });
 
@@ -78,7 +113,9 @@ public class ChatRoomActivity extends AppCompatActivity {
                     .setMessage("The selected row is:" + (pos+1) + "\n" + "The database id id:" + id)
                     //what the Yes button does:
                     .setPositiveButton("Yes", (click, arg) -> {
+                        deleteContact(list.get(pos));
                         list.remove(pos);
+                        //db.delete(MyOpener.TABLE_NAME, MyOpener.COL_ID + "= ?", new String[] {Long.toString(list.get(pos).getId())});
                         myAdapter.notifyDataSetChanged();
                     })
                     //What the No button does:
@@ -92,6 +129,46 @@ public class ChatRoomActivity extends AppCompatActivity {
 
         SwipeRefreshLayout refresher = findViewById(R.id.refresher);
         refresher.setOnRefreshListener(() -> refresher.setRefreshing(false));
+    }
+
+    protected void deleteContact(Message c)
+    {
+        db.delete(MyOpener.TABLE_NAME, MyOpener.COL_ID + "= ?", new String[] {Long.toString(c.getId())});
+    }
+
+
+
+    private void loadDataFromDatabase()
+    {
+        //get a database connection:
+        MyOpener dbOpener = new MyOpener(this);
+        db = dbOpener.getWritableDatabase(); //This calls onCreate() if you've never built the table before, or onUpgrade if the version here is newer
+        // We want to get all of the columns. Look at MyOpener.java for the definitions:
+        String [] columns = {MyOpener.COL_ID,MyOpener.COL_TYPE, MyOpener.COL_MESSAGE};
+        //query all the results from the database:
+        Cursor results = db.query(false, MyOpener.TABLE_NAME, columns, null, null, null, null, null, null);
+
+        //Now the results object has rows of results that match the query.
+        //find the column indices:
+        int MESSAGE_index = results.getColumnIndex(MyOpener.COL_MESSAGE);
+        int TYPE_index = results.getColumnIndex(MyOpener.COL_TYPE);
+        int ID_index = results.getColumnIndex(MyOpener.COL_ID);
+
+        //iterate over the results, return true if there is a next item:
+        while(results.moveToNext())
+        {
+            Boolean TYPE2 ;
+            //int TYPE = results.getInt(TYPE_index);
+            if(results.getInt(TYPE_index) == 0){TYPE2 = true;}
+            else {TYPE2 = false;}
+            String MESSAGE = results.getString(MESSAGE_index);
+            long ID = results.getLong(ID_index);
+            //add the new Contact to the array list:
+            list.add(new Message(MESSAGE,TYPE2, ID));
+
+        }
+        printCursor( results, db.getVersion());
+        //At this point, the contactsList array has loaded every row from the cursor.
     }
 
     class MyListAdapter extends BaseAdapter {
@@ -121,24 +198,33 @@ public class ChatRoomActivity extends AppCompatActivity {
 
             //maake a new view
             //if (newView == null) {
-                switch (msg.getGender()) {
-                    case 0:
-                         newView = inflater.inflate(R.layout.row_layout, parent, false);
-//                         TextView tView = newView.findViewById(R.id.textview_row);
-//                         tView.setText(et.getText());
-                        break;
-
-                    case 1:
-                        newView = inflater.inflate(R.layout.arow_layout, parent, false);
-//                        TextView atView = newView.findViewById(R.id.textview_arow);
-//                        atView.setText(et.getText());
-                        break;
-                }
+            if (msg.getType()) {
+                newView = inflater.inflate(R.layout.row_layout, parent, false);
+//
+            } else if (!(msg.getType())) {
+                newView = inflater.inflate(R.layout.arow_layout, parent, false);
+//
+            }
            // }
             TextView tv = newView.findViewById(R.id.rexit);
             tv.setText(msg.getText());
             return newView; }
 
+    }
+
+    public  void printCursor( Cursor c, int version){
+      Log.e("Version", String.valueOf(db.getVersion()));
+      Log.e("Number of columns", String.valueOf(c.getColumnCount()));
+      for(int i = 0; i < c.getColumnCount(); i++ ){
+      Log.e("Name of columns", c.getColumnName(i));}
+      Log.e("Numbers of rows", String.valueOf(c.getCount()));
+
+      c.moveToFirst(); while(!c.isAfterLast() ){
+            for(int i = 0; i < c.getColumnCount(); i++ ){
+                Log.e("Each row of results", c.getString(i));
+                 }
+            c.moveToNext();
+           }
     }
 }
 
