@@ -184,7 +184,7 @@ public class ChatRoomActivity extends AppCompatActivity {
 
         @Override
         public long getItemId(int position) {
-            return (long) position;
+            return list.get(position).getId();
         }
 
 
