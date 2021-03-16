@@ -1,7 +1,5 @@
 package com.cst2335.abc040963564;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -14,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 public class ProfileActivity extends AppCompatActivity{
-
     private ImageButton mImageButton;
     public static final String ACTIVITY_NAME = "PROFILE_ACTIVITY";
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -37,19 +34,27 @@ public class ProfileActivity extends AppCompatActivity{
                 dispatchTakePictureIntent();
             }
         });
-        Button b4 = findViewById(R.id.button4);
+        Button b4 = (Button) findViewById(R.id.button4);
         b4.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
                 Intent goTochat = new Intent(ProfileActivity.this, ChatRoomActivity.class);
-
                 startActivity(goTochat);
-
             }
         });
+       Button weatherButton = findViewById(R.id.weatherforecast);
+        Intent gotoweather = new Intent(ProfileActivity.this, WeatherForecast.class);
+       weatherButton.setOnClickListener(v  -> startActivity(gotoweather));
 
-    }
+
+                                        }
+//           @Override
+//           public void onClick(View v){
+//               Intent gotoweather = new Intent(ProfileActivity.this, WeatherForecast.class);
+//               startActivity(gotoweather);
+//           }
+//       });
+
 
                 private void dispatchTakePictureIntent() {
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -92,11 +97,6 @@ public class ProfileActivity extends AppCompatActivity{
         super.onDestroy();
         Log.e(ACTIVITY_NAME, "In function:" + "onDestroy");
     }
-
-
-
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

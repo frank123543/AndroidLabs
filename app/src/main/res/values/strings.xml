@@ -18,4 +18,5 @@
     <string name="sent_button">Sent</string>
     <string name="type_here">Type here</string>
     <string name="receive_button">Receive</string>
+    <string name="weatherforecast">Launch weathercast</string>
 </resources>
