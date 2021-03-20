@@ -5,6 +5,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -16,10 +17,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.lang.Boolean.TRUE;
@@ -35,8 +38,14 @@ public class ChatRoomActivity extends AppCompatActivity {
     private Button rb;
     private Context context;
     EditText et;
-    private List<Message> list = new ArrayList<>();
+    private List<Message> mylist = new ArrayList<>();
     SQLiteDatabase db;
+    public static final String ITEM_SELECTED = "ITEM";
+//    public static final String ITEM_POSITION = "POSITION";
+    public static final String ITEM_TYPE = "TYPE";
+    public static final String ITEM_ID = "ID";
+    DetailsFragment dFragment;
+//    ArrayList<String>   source = new ArrayList<>(Arrays.asList("One", "Two", "Three", "Four"));
 
 
 
@@ -49,8 +58,6 @@ public class ChatRoomActivity extends AppCompatActivity {
                 this.text = text;
                 this.id = id;
         }
-
-
         public void setText(String text){this.text = text;}
        public String getText(){return text;}
        public void setType(boolean type){this.type = type;}
@@ -65,6 +72,8 @@ public class ChatRoomActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
+        boolean isTablet = findViewById(R.id.fragmentLocation) != null;
+        Log.i("isTablet",""+isTablet);
         ListView myList = (ListView) findViewById(R.id.theListView);
         et = findViewById(R.id.edit);
         //load database
@@ -88,7 +97,7 @@ public class ChatRoomActivity extends AppCompatActivity {
             newRowValues.put(MyOpener.COL_MESSAGE, text);
             long newId = db.insert(MyOpener.TABLE_NAME, null, newRowValues);
             Message newMessage = new Message(text,true,newId);
-            list.add(newMessage);
+            mylist.add(newMessage);
             myAdapter.notifyDataSetChanged();
         });
 
@@ -103,7 +112,7 @@ public class ChatRoomActivity extends AppCompatActivity {
             newRowValues.put(MyOpener.COL_MESSAGE, text);
             long newId = db.insert(MyOpener.TABLE_NAME, null, newRowValues);
             Message newMessage = new Message(text,false,newId);
-            list.add(newMessage);
+            mylist.add(newMessage);
             myAdapter.notifyDataSetChanged();
         });
 
@@ -113,10 +122,11 @@ public class ChatRoomActivity extends AppCompatActivity {
                     .setMessage("The selected row is:" + (pos+1) + "\n" + "The database id id:" + id)
                     //what the Yes button does:
                     .setPositiveButton("Yes", (click, arg) -> {
-                        deleteContact(list.get(pos));
-                        list.remove(pos);
+                        deleteContact(mylist.get(pos));
+                        mylist.remove(pos);
                         //db.delete(MyOpener.TABLE_NAME, MyOpener.COL_ID + "= ?", new String[] {Long.toString(list.get(pos).getId())});
                         myAdapter.notifyDataSetChanged();
+                        getSupportFragmentManager().beginTransaction().remove(dFragment).commit();
                     })
                     //What the No button does:
                     .setNegativeButton("No", (click, arg) -> {
@@ -126,9 +136,30 @@ public class ChatRoomActivity extends AppCompatActivity {
             return true;
         });
 
+        myList.setOnItemClickListener((list, item, position, id) -> {
+            Bundle dataToPass = new Bundle();
+            dataToPass.putString(ITEM_SELECTED, mylist.get(position).getText() );
+//            dataToPass.putInt(ITEM_POSITION, position);
+            dataToPass.putBoolean(ITEM_TYPE,mylist.get(position).getType());
+            dataToPass.putLong(ITEM_ID, id);
 
-        SwipeRefreshLayout refresher = findViewById(R.id.refresher);
-        refresher.setOnRefreshListener(() -> refresher.setRefreshing(false));
+            if(isTablet)
+            {
+                dFragment = new DetailsFragment(); //add a DetailFragment
+                dFragment.setArguments( dataToPass ); //pass it a bundle for information
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragmentLocation, dFragment) //Add the fragment in FrameLayout
+                        .commit(); //actually load the fragment. Calls onCreate() in DetailFragment
+            }
+            else //isPhone
+            {
+                Intent nextActivity = new Intent(ChatRoomActivity.this, EmptyActivity.class);
+                nextActivity.putExtras(dataToPass); //send data to next activity
+                startActivity(nextActivity); //make the transition
+            }});
+//        SwipeRefreshLayout refresher = findViewById(R.id.refresher);
+//        refresher.setOnRefreshListener(() -> refresher.setRefreshing(false));
     }
 
     protected void deleteContact(Message c)
@@ -164,7 +195,7 @@ public class ChatRoomActivity extends AppCompatActivity {
             String MESSAGE = results.getString(MESSAGE_index);
             long ID = results.getLong(ID_index);
             //add the new Contact to the array list:
-            list.add(new Message(MESSAGE,TYPE2, ID));
+            mylist.add(new Message(MESSAGE,TYPE2, ID));
 
         }
         printCursor( results, db.getVersion());
@@ -174,17 +205,17 @@ public class ChatRoomActivity extends AppCompatActivity {
     class MyListAdapter extends BaseAdapter {
         @Override
         public int getCount() {
-            return list == null ? 0 : list.size();
+            return mylist == null ? 0 : mylist.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return list.get(position);
+            return mylist.get(position);
         }
 
         @Override
         public long getItemId(int position) {
-            return list.get(position).getId();
+            return mylist.get(position).getId();
         }
 
 

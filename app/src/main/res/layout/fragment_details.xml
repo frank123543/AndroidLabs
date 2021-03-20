@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="MessageHere"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvMessage"
+        />
+     <CheckBox
+         android:id="@+id/check"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="Is a send message"
+         />
+    <TextView
+        android:text="ID="
+        android:layout_below="@+id/tvMessage"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvid"
+        />
+
+    <RelativeLayout
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        >
+    <Button
+        android:id="@+id/buttonh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="HIDE"/>
+    </RelativeLayout>
+
+</LinearLayout>
+
+
