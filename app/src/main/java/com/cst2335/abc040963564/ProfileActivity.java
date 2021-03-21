@@ -46,14 +46,20 @@ public class ProfileActivity extends AppCompatActivity{
         Intent gotoweather = new Intent(ProfileActivity.this, WeatherForecast.class);
        weatherButton.setOnClickListener(v  -> startActivity(gotoweather));
 
+       Button toolbar = findViewById(R.id.toolbar);
+       toolbar.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Intent gototoolbar = new Intent(ProfileActivity.this, TestToolbar.class);
+               startActivityForResult(gototoolbar,1);
+           }
+       });
+
+
+
 
                                         }
-//           @Override
-//           public void onClick(View v){
-//               Intent gotoweather = new Intent(ProfileActivity.this, WeatherForecast.class);
-//               startActivity(gotoweather);
-//           }
-//       });
+
 
 
                 private void dispatchTakePictureIntent() {
@@ -107,6 +113,8 @@ public class ProfileActivity extends AppCompatActivity{
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             mImageButton.setImageBitmap(imageBitmap);
+        }else if(requestCode == 1 && resultCode == 500){
+
         }
     }
 
